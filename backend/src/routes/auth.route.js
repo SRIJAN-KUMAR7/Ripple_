@@ -4,7 +4,8 @@ const router=express.Router();
 
 
 router.get("/signup",(req,res)=>{
-    res.send("Signup endpoint");
+    res.send("Signup endpoint");//password encryption using bycrypt
+    
 });
 
 router.get("/login",(req,res)=>{

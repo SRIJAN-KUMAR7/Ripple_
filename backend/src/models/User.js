@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const userSchem=new mongoose.Schema({
+const userSchema=new mongoose.Schema({
     email:{
         type: String,
         required:true,
@@ -20,3 +20,7 @@ const userSchem=new mongoose.Schema({
         default:""
     }
 },{timestamps:true}) //shows createdAt and Updatedat
+
+const User=mongoose.model("User",userSchema);
+
+export default User;

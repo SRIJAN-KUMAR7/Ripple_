@@ -1,6 +1,4 @@
-//instead of calling environment variables 
-//lets call here for everywhere 
-// import 'dotenv/config';
+//global definition for env
 
 import 'dotenv/config'
 

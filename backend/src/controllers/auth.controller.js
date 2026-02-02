@@ -95,11 +95,15 @@ export const logout=async(_,res)=>{
   res.cookie("jwt","",{maxAge:0});
   res.status(200).json({message:"Logged Out successfully"})
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> c821f5ae17e503c1732d709a1365a88e77f411d4
 }
 
 export const updateprofile=async(req,res)>{
   
 } 
+<<<<<<< HEAD
 =======
 };
 
@@ -132,3 +136,5 @@ export const updateProfile=async(req,res)=>{
  }
 };
 >>>>>>> middleware
+=======
+>>>>>>> c821f5ae17e503c1732d709a1365a88e77f411d4

@@ -15,8 +15,12 @@ CLOUDINARY_CLOUD_NAME:process.env.CLOUDINARY_CLOUD_NAME,
 CLOUDINARY_API_KEY:process.env.CLOUDINARY_API_KEY,
 CLOUDINARY_API_SECRET:process.env.CLOUDINARY_API_SECRET
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> middleware
+=======
+
+>>>>>>> c821f5ae17e503c1732d709a1365a88e77f411d4
 }
 

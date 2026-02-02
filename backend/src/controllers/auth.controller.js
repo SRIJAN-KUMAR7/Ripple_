@@ -3,6 +3,7 @@ import User from "../models/User.js";
 import { generateToken } from "../lib/utils.js";
 import { sendWelcomeEmail } from "../emails/emailHandlers.js";
 import { ENV } from "../lib/env.js";
+import cloudinary from "../lib/cloudinary.js"
 
 export const signup=async(req,res)=>{
     const {fullName,email,password}=req.body;
@@ -58,7 +59,7 @@ export const signup=async(req,res)=>{
      console.log("Error in signup conteroller:",err);
      res.status(500).json({message:"Internal server error"});
     }
-}
+};
 
 
 export const login=async(req,res)=>{
@@ -87,7 +88,7 @@ try {
   return res.status(500).json({message:"Internal server error!"})
 }
 
-}
+};
 
 
 export const logout=async(_,res)=>{

@@ -4,6 +4,14 @@ const router=express.Router();
 
 import { signup ,login,logout ,updateProfile } from "../controllers/auth.controller.js";
 import { protectRoute } from "../middleware/auth.middleware.js";
+import { arcjetProtection } from "../middleware/arcjet.middleware.js";
+
+// router.get("/test",arcjetProtection,(req,res)=>{
+//     res.status(200).json({
+//         message:"Test arcjet"
+//     })
+// })
+router.use(arcjetProtection); //for every route present there
 
 router.post("/signup",signup);
 

@@ -43,7 +43,7 @@ function SignUpPage() {
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center p-4 sm:p-8  text-slate-200 font-sans">
-      <div className="w-full max-w-[1080px] flex flex-col md:flex-row bg-[#191724] rounded-[2.5rem] overflow-hidden shadow-2xl shadow-indigo-900/10 relative">
+      <div className="w-full max-w-5xl flex flex-col md:flex-row bg-[#191724] rounded-[2.5rem] overflow-hidden shadow-2xl shadow-indigo-900/10 relative">
         <div className="relative hidden md:flex md:w-[45%] lg:w-1/2 bg-[#15131D] overflow-hidden">
 
 
@@ -70,7 +70,7 @@ function SignUpPage() {
                 Ripple
               </div>
               <Link to="/" className="text-sm text-slate-300 hover:text-white transition-colors flex items-center gap-1.5 bg-white/5 hover:bg-white/10 px-4 py-2 rounded-full backdrop-blur-md border border-white/5">
-                Back to website <span>→</span>
+                Home Page <span>→</span>
               </Link>
             </div>
 

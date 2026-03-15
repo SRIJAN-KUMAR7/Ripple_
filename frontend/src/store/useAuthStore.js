@@ -6,6 +6,7 @@ export const useAuthStore = create((set) => ({
   authUser: null,
   isCheckingAuth: true,
   isSigningUp: false,
+  isLogginIn:false,
 
   checkAuth: async () => {
     try {
@@ -33,6 +34,21 @@ export const useAuthStore = create((set) => ({
     }
   },
 
+
+   login: async (data) => {
+    set({ isLogginIn: true })
+    try {
+      const res = await axiosInstance.post("/auth/login", data);
+      set({ authUser: res.data });
+
+      toast.success("Logged in successfully!")
+    } catch (error) {
+      toast.error(error.response.data.message)
+    } finally {
+      set({ isLogginIn: false })
+    }
+  },
+
   googleLogin: async (token) => {
     try {
       const res = await axiosInstance.post("/auth/google", { token });
@@ -43,5 +59,17 @@ export const useAuthStore = create((set) => ({
       toast.error(error.response?.data?.message || "Google Login failed");
     }
   },
+
+  
+  logout:async()=>{
+    try {
+      await axiosInstance.post("auth/logout");
+      set({authUser:null})
+      toast.success("Logged out successfully!")
+    } catch (error) {
+      toast.error(error.response.data.message)
+    }
+  }
+
 
 }));

@@ -15,7 +15,7 @@ const LoginPage = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
-  const { login, isLogginIn, googleLogin } = useAuthStore();
+  const { login, isLoggingIn, googleLogin } = useAuthStore();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -143,10 +143,10 @@ const LoginPage = () => {
               {/* LOGIN BUTTON */}
               <button
                 type="submit"
-                disabled={isLogginIn}
+                disabled={isLoggingIn}
                 className="w-full bg-[#7A5AF8] hover:bg-[#684CE0] text-white rounded-xl py-3 font-medium transition-all active:scale-[0.98] flex items-center justify-center mt-2 disabled:opacity-70 disabled:cursor-not-allowed shadow-[0_4px_20px_rgba(122,90,248,0.25)] hover:shadow-[0_4px_25px_rgba(122,90,248,0.35)] text-sm"
               >
-                {isLogginIn ? (
+                {isLoggingIn ? (
                   <LoaderIcon className="w-5 h-5 animate-spin" />
                 ) : (
                   "Login"

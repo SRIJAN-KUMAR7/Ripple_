@@ -22,7 +22,7 @@ const App = () => {
 
 
   return (
-    <div className='min-h-screen bg-slate-900 relative flex items-center justify-center p-4 overflow-hidden text-white'>
+    <div className={`min-h-screen relative flex overflow-hidden text-white ${!authUser ? 'bg-slate-900 items-center justify-center p-4' : 'bg-black'}`}>
       {/* Background elements */}
       <div className="absolute inset-0 bg-black" />
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff12_1px,transparent_1px),linear-gradient(to_bottom,#ffffff12_1px,transparent_1px)] bg-[size:40px_40px]" />
@@ -31,7 +31,8 @@ const App = () => {
       <div className="absolute bottom-0 -right-32 w-[500px] h-[500px] bg-gradient-to-tr from-white/10 via-gray-300/10 to-transparent blur-[120px]" />
 
 
-      <div className="relative z-10 w-full max-w-5xl">
+
+      <div className={`relative z-10 w-full ${!authUser ? 'max-w-5xl' : 'h-full'}`}>
         <Routes>
           <Route path="/" element={authUser ? <ChatPage /> : <Navigate to={"/login"} />} />
           <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to={"/"} />} />

@@ -12,7 +12,6 @@ import {
     ChevronLeft,
 } from "lucide-react";
 
-/* ─── helpers ─────────────────────────────────────────────── */
 function formatMsgTime(dateStr) {
     if (!dateStr) return "";
     return new Date(dateStr).toLocaleTimeString([], {
@@ -34,7 +33,6 @@ function groupByDate(messages) {
     }, {});
 }
 
-/* ─── Message bubble ──────────────────────────────────────── */
 function MessageBubble({ msg, isMine }) {
     return (
         <div className={`flex items-end gap-2 ${isMine ? "flex-row-reverse" : "flex-row"}`}>
@@ -77,7 +75,6 @@ function MessageBubble({ msg, isMine }) {
     );
 }
 
-/* ─── Date divider ────────────────────────────────────────── */
 function DateDivider({ label }) {
     return (
         <div className="flex items-center gap-3 my-3">
@@ -90,21 +87,18 @@ function DateDivider({ label }) {
     );
 }
 
-/* ─── Main container ──────────────────────────────────────── */
 function ChatContainer() {
     const { selectedUser, setSelectedUser, messages, isMessagesLoading, getMessages, sendMessage } = useChatStore();
     const { authUser } = useAuthStore();
     const [text, setText] = useState("");
     const bottomRef = useRef(null);
 
-    // Fetch messages when selected user changes
     useEffect(() => {
         if (selectedUser?._id) {
             getMessages(selectedUser._id);
         }
     }, [selectedUser?._id, getMessages]);
 
-    // Auto scroll to bottom whenever messages change
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
@@ -113,7 +107,7 @@ function ChatContainer() {
         e.preventDefault();
         const trimmed = text.trim();
         if (!trimmed) return;
-        setText(""); // optimistic clear
+        setText(""); 
         await sendMessage({ text: trimmed });
     };
 
@@ -122,9 +116,7 @@ function ChatContainer() {
 
     return (
         <div className="flex flex-col h-full">
-            {/* ── Header ─────────────────────────────────────────── */}
             <div className="flex items-center gap-3 px-4 py-3 border-b border-[#1f1f1f] bg-[#0f0f0f] flex-shrink-0">
-                {/* Back button (useful on mobile) */}
                 <button
                     onClick={() => setSelectedUser(null)}
                     className="p-1 rounded-lg text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-all md:hidden"
@@ -150,7 +142,6 @@ function ChatContainer() {
                     </p>
                 </div>
 
-                {/* Extra action icons */}
                 <div className="flex items-center gap-1">
                     <button className="p-2 rounded-lg text-slate-500 hover:text-[#ff8563] hover:bg-[#ff8563]/10 transition-all">
                         <Mic className="w-4 h-4" />
@@ -158,7 +149,6 @@ function ChatContainer() {
                 </div>
             </div>
 
-            {/* ── Message area ───────────────────────────────────── */}
             <div className="flex-1 overflow-y-auto px-4 py-4 space-y-1 scrollbar-thin scrollbar-thumb-[#3A364D] scrollbar-track-transparent no-scrollbar">
                 {isMessagesLoading ? (
                     <div className="flex items-center justify-center h-full">

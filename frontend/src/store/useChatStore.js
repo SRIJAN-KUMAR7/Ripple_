@@ -11,11 +11,18 @@ export const useChatStore = create((set, get) => ({
     isUserLoading: false,
     isMessagesLoading: false,
     isSoundEnabled: localStorage.getItem("isSoundEnabled") === "true",
+    isSidebarCollapsed: localStorage.getItem("isSidebarCollapsed") === "true",
 
     toggleSound: () => {
         const next = !get().isSoundEnabled;
         localStorage.setItem("isSoundEnabled", String(next));
         set({ isSoundEnabled: next });
+    },
+
+    toggleSidebar: () => {
+        const next = !get().isSidebarCollapsed;
+        localStorage.setItem("isSidebarCollapsed", String(next));
+        set({ isSidebarCollapsed: next });
     },
 
     setActiveTab: (tab) => set({ activeTab: tab }),

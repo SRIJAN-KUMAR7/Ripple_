@@ -141,12 +141,6 @@ function ChatContainer() {
                         {isOnline ? "Online" : "Offline"}
                     </p>
                 </div>
-
-                <div className="flex items-center gap-1">
-                    <button className="p-2 rounded-lg text-slate-500 hover:text-[#ff8563] hover:bg-[#ff8563]/10 transition-all">
-                        <Mic className="w-4 h-4" />
-                    </button>
-                </div>
             </div>
 
             <div className="flex-1 overflow-y-auto px-4 py-4 space-y-1 scrollbar-thin scrollbar-thumb-[#3A364D] scrollbar-track-transparent no-scrollbar">

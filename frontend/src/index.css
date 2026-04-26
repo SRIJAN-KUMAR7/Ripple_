@@ -1,13 +1,138 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+/* ── Theme CSS Variables ───────────────────────────────────────── */
+:root {
+  --bg-base: #0a0a0a;
+  --bg-surface: #111111;
+  --bg-elevated: #1a1a1a;
+  --bg-input: #1f1f1f;
+  --bg-hover: rgba(255, 255, 255, 0.05);
+  --border-color: #1f1f1f;
+  --border-subtle: #2f2f2f;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #475569;
+  --accent: #ff8563;
+  --accent-hover: #e67757;
+  --accent-bg: rgba(255, 133, 99, 0.1);
+  --accent-bg-hover: rgba(255, 133, 99, 0.15);
+  --grid-color: rgba(255,255,255,0.07);
+  --glow-color: rgba(255, 255, 255, 0.08);
+}
+
+html.light {
+  --bg-base: #f0f2f5;
+  --bg-surface: #ffffff;
+  --bg-elevated: #f8f8f8;
+  --bg-input: #f0f0f0;
+  --bg-hover: rgba(0, 0, 0, 0.04);
+  --border-color: #e2e8f0;
+  --border-subtle: #cbd5e1;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --accent: #ff8563;
+  --accent-hover: #e67757;
+  --accent-bg: rgba(255, 133, 99, 0.08);
+  --accent-bg-hover: rgba(255, 133, 99, 0.15);
+  --grid-color: rgba(0,0,0,0.04);
+  --glow-color: rgba(255, 133, 99, 0.06);
+}
+
+/* ── Base App Layout ──────────────────────────────────────────── */
+.app-bg {
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.surface { background-color: var(--bg-surface); }
+.elevated { background-color: var(--bg-elevated); }
+.border-theme { border-color: var(--border-color); }
+
+/* ── Sidebar & Chat Containers ────────────────────────────────── */
+.sidebar-bg {
+  background-color: var(--bg-surface);
+  border-right: 1px solid var(--border-color);
+  transition: background-color 0.25s ease;
+}
+
+.chat-bg {
+  background-color: var(--bg-base);
+  transition: background-color 0.25s ease;
+}
+
+.input-bar-bg {
+  background-color: var(--bg-surface);
+  border-top: 1px solid var(--border-color);
+  transition: background-color 0.25s ease;
+}
+
+.chat-header-bg {
+  background-color: var(--bg-surface);
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.25s ease;
+}
+
+/* ── Messages ─────────────────────────────────────────────────── */
+.msg-theirs {
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  transition: background-color 0.25s ease;
+}
+
+/* ── Input ────────────────────────────────────────────────────── */
+.chat-input {
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.chat-input::placeholder {
+  color: var(--text-muted);
+}
+
+.chat-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+/* ── Contact / Chat list items ────────────────────────────────── */
+.list-item-hover:hover {
+  background-color: var(--bg-hover);
+}
+
+.list-item-selected {
+  background-color: var(--accent-bg-hover);
+  border-color: rgba(255, 133, 99, 0.3);
+}
+
+/* ── Date divider ─────────────────────────────────────────────── */
+.date-divider {
+  border-color: var(--border-color);
+}
+
+/* ── Scrollbar ────────────────────────────────────────────────── */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ── Grid BG ──────────────────────────────────────────────────── */
+.app-grid {
+  background-image:
+    linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* ── Border animation (preserved) ────────────────────────────── */
 @theme {
   --animate-border: border 4s linear infinite;
-
   @keyframes border {
-    to {
-      --border-angle: 360deg;
-    }
+    to { --border-angle: 360deg; }
   }
 }
 
@@ -15,31 +140,4 @@
   inherits: false;
   initial-value: 0deg;
   syntax: "<angle>";
-}
-
-
-.input {
-  @apply w-full bg-slate-800/50 border border-slate-700 rounded-lg py-2 pl-10 pr-4 text-slate-200 placeholder-slate-400 focus:ring-2 focus:ring-cyan-500 focus:border-transparent;
-}
-
-.auth-input-icon {
-  @apply absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 size-5;
-}
-
-.auth-input-label {
-  @apply block text-sm font-medium text-slate-300 mb-2;
-}
-
-.auth-badge {
-  @apply inline-flex items-center px-3 py-1 text-xs font-medium rounded-full bg-cyan-500/20 text-cyan-300;
-}
-
-.auth-btn {
-  @apply w-full bg-cyan-500 text-white rounded-lg py-2.5 font-medium
-  hover:bg-cyan-600 focus:ring-2 focus:ring-cyan-500;
-}
-
-.auth-link {
-  @apply px-4 py-2 inline-block bg-cyan-500/10 rounded-lg text-cyan-400
-  hover:text-cyan-500 text-sm transition-colors;
 }

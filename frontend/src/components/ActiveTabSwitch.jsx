@@ -11,20 +11,41 @@ function ActiveTabSwitch() {
 
     return (
         <div className="px-3 py-2">
-            <div className="flex bg-[#1f1f1f] rounded-lg p-0.5">
-                {tabs.map(({ id, label, icon: Icon }) => (
-                    <button
-                        key={id}
-                        onClick={() => setActiveTab(id)}
-                        className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-md text-sm font-medium transition-all duration-200 ${activeTab === id
-                            ? "bg-[#ff8563] text-white shadow-md shadow-[#ff8563]/30"
-                            : "text-slate-400 hover:text-slate-200"
-                            }`}
-                    >
-                        <Icon className="w-3.5 h-3.5" />
-                        {label}
-                    </button>
-                ))}
+            <div
+                className="flex rounded-lg p-0.5"
+                style={{ backgroundColor: 'var(--bg-elevated)' }}
+            >
+                {tabs.map(({ id, label, icon: Icon }) => {
+                    const isActive = activeTab === id;
+                    return (
+                        <button
+                            key={id}
+                            onClick={() => setActiveTab(id)}
+                            className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-md text-sm font-medium transition-all duration-200"
+                            style={
+                                isActive
+                                    ? {
+                                          backgroundColor: 'var(--accent)',
+                                          color: '#ffffff',
+                                          boxShadow: '0 2px 8px rgba(255,133,99,0.3)',
+                                      }
+                                    : {
+                                          color: 'var(--text-muted)',
+                                          backgroundColor: 'transparent',
+                                      }
+                            }
+                            onMouseEnter={e => {
+                                if (!isActive) e.currentTarget.style.color = 'var(--text-secondary)';
+                            }}
+                            onMouseLeave={e => {
+                                if (!isActive) e.currentTarget.style.color = 'var(--text-muted)';
+                            }}
+                        >
+                            <Icon className="w-3.5 h-3.5" />
+                            {label}
+                        </button>
+                    );
+                })}
             </div>
         </div>
     );

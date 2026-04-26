@@ -15,7 +15,7 @@ const LandingPage = () => {
             {/* Hero Text */}
             <h1 className="text-5xl md:text-7xl font-extrabold text-white mb-6 tracking-tight max-w-4xl leading-tight">
                 Connect the world, <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ff8563] to-[#8B6EFC]">
+                <span className="text-transparent bg-clip-text  bg-[#8B6EFC]">
                     one ripple at a time.
                 </span>
             </h1>

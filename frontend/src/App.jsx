@@ -3,38 +3,35 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import ChatPage from './pages/ChatPage'
 import LoginPage from './pages/LoginPage'
 import SignUpPage from './pages/SignUpPage'
+import LandingPage from './pages/LandingPage'
 import { useAuthStore } from './store/useAuthStore'
+import { useThemeStore } from './store/useThemeStore'
 
 import PageLoader from './components/PageLoader'
 import { Toaster } from 'react-hot-toast'
 
 const App = () => {
   const { checkAuth, isCheckingAuth, authUser } = useAuthStore();
+  // Subscribe to theme store so re-render happens on toggle
+  useThemeStore();
 
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
-  // console.log({authUser})
 
   if (isCheckingAuth) {
     return <PageLoader />
   }
 
-
   return (
-    <div className={`min-h-screen relative flex overflow-hidden text-white ${!authUser ? 'bg-slate-900 items-center justify-center p-4' : 'bg-black'}`}>
-      {/* Background elements */}
-      <div className="absolute inset-0 bg-black" />
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff12_1px,transparent_1px),linear-gradient(to_bottom,#ffffff12_1px,transparent_1px)] bg-[size:40px_40px]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.08),transparent_60%)]" />
-      <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-white opacity-10 blur-[140px]" />
-      <div className="absolute bottom-0 -right-32 w-[500px] h-[500px] bg-gradient-to-tr from-white/10 via-gray-300/10 to-transparent blur-[120px]" />
-
-
+    <div className={`min-h-screen relative flex overflow-hidden app-bg transition-colors duration-300 ${!authUser ? 'items-center justify-center p-4' : ''}`}>
+      {/* Background grid */}
+      <div className="absolute inset-0 app-grid pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,var(--glow-color),transparent_60%)] pointer-events-none" />
 
       <div className={`relative z-10 w-full ${!authUser ? 'max-w-5xl' : 'h-full'}`}>
         <Routes>
-          <Route path="/" element={authUser ? <ChatPage /> : <Navigate to={"/login"} />} />
+          <Route path="/" element={authUser ? <ChatPage /> : <LandingPage />} />
           <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to={"/"} />} />
           <Route path="/signup" element={!authUser ? <SignUpPage /> : <Navigate to={"/"} />} />
         </Routes>

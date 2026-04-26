@@ -2,6 +2,8 @@ import { measureMemory } from "vm";
 import cloudinary from "../lib/cloudinary.js";
 import Message from "../models/Message.js";
 import User from "../models/User.js";
+import { getReceiverSocketId, io } from "../lib/socket.js";
+
 
 export const getAllContacts=async(req,res)=>{
 
@@ -35,13 +37,13 @@ export const getMessagesByUserId=async(req,res)=>{
 
 export const sendMessage=async(req,res)=>{
     try {
-       const {text,image}=req.body;
+       const {text, image, file, fileType}=req.body;
        const {id :receiverId}=req.params;
 
        const senderId=req.user._id;
 
-       if(!text && image){
-        return res.status(400).json({message: "Text or Image is requiresd"});
+       if(!text && !image && !file){
+        return res.status(400).json({message: "Message content is required"});
        }
        if(senderId.equals(receiverId)){
                 return res.status(400).json({message: "Cannot send message to yourself"});
@@ -58,19 +60,34 @@ export const sendMessage=async(req,res)=>{
 
        let imageUrl;
        if(image){
-        //upload base64 to cloudinary
         const uploadResponse=await cloudinary.uploader.upload(image);
         imageUrl=uploadResponse.secure_url;
        }
+
+       let fileUrl;
+       if(file){
+        const uploadResponse = await cloudinary.uploader.upload(file, {
+            resource_type: "auto"
+        });
+        fileUrl = uploadResponse.secure_url;
+       }
+
        const newMessage= new Message({
         senderId,
         receiverId,
         text,
         image:imageUrl,
+        file: fileUrl,
+        fileType: fileType
        })
        await newMessage.save();
       
-       //todo : send message in real time if user is online -socket.io 
+       // real-time messaging with socket.io
+       const receiverSocketId = getReceiverSocketId(receiverId);
+       if (receiverSocketId) {
+         io.to(receiverSocketId).emit("newMessage", newMessage);
+       }
+
        res.status(201).json(newMessage)
 
     } catch (error) {

@@ -16,11 +16,12 @@ const io=new Server(server,{
     },
 });
 
-io.use(socketAuthMiddleware)
+io.use(socketAuthMiddleware);
 
-export const getReceiverSocketId = (userId) => {
+
+export function getReceiverSocketId(userId) {
     return userSocketMap[userId];
-};
+}
 
 const userSocketMap = {}; // {userId: socketId}
 

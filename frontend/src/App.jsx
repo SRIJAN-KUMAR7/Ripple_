@@ -12,7 +12,6 @@ import { Toaster } from 'react-hot-toast'
 
 const App = () => {
   const { checkAuth, isCheckingAuth, authUser } = useAuthStore();
-  // Subscribe to theme store so re-render happens on toggle
   useThemeStore();
 
   useEffect(() => {

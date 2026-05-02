@@ -19,8 +19,6 @@ function NoConversationPlaceholder() {
                     Pick a chat from the sidebar or start a new conversation with a contact.
                 </p>
             </div>
-
-            {/* Subtle decorative dots */}
             <div className="flex gap-1.5 mt-2">
                 {[0, 1, 2].map((i) => (
                     <div

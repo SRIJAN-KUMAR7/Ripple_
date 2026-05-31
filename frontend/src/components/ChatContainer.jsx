@@ -11,7 +11,10 @@ import {
     ChevronLeft,
     FileIcon,
     X,
-    Download
+    Download,
+    Lock,
+    LockOpen,
+    ShieldCheck
 } from "lucide-react";
 import { useThemeStore } from "../store/useThemeStore";
 import EmojiPicker from "emoji-picker-react";
@@ -42,6 +45,7 @@ function MessageBubble({ msg, isMine }) {
     const isFile = !!msg.file;
     const hasText = !!msg.text;
     const isTextOnly = hasText && !isImage && !isFile;
+    const isEncrypted = msg.isEncrypted;
 
     return (
         <div className={`flex items-end gap-2 ${isMine ? "flex-row-reverse" : "flex-row"}`}>
@@ -101,8 +105,16 @@ function MessageBubble({ msg, isMine }) {
                     </div>
                 )}
 
-                {/* Time + read receipt */}
+                {/* Time + read receipt + encryption indicator */}
                 <div className="flex items-center gap-1.5 px-1">
+                    {/* 🔒 padlock if this message was E2E encrypted */}
+                    {isEncrypted && (
+                        <Lock
+                            className="w-3 h-3"
+                            style={{ color: 'var(--text-muted)' }}
+                            title="End-to-end encrypted"
+                        />
+                    )}
                     <span className="text-[10px] font-medium" style={{ color: 'var(--text-muted)' }}>
                         {formatMsgTime(msg.createdAt)}
                     </span>
@@ -138,7 +150,8 @@ function ChatContainer() {
         getMessages,
         sendMessage,
         subscribeToMessages,
-        unsubscribeFromMessages
+        unsubscribeFromMessages,
+        getSharedKeyStatus,
     } = useChatStore();
     const { authUser, onlineUsers } = useAuthStore();
     const { theme } = useThemeStore();
@@ -146,6 +159,7 @@ function ChatContainer() {
     const [imagePreview, setImagePreview] = useState(null);
     const [filePreview, setFilePreview] = useState(null);
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+    const [isE2EReady, setIsE2EReady] = useState(false); // true when shared key is derived
     const fileInputRef = useRef(null);
     const bottomRef = useRef(null);
     const emojiPickerRef = useRef(null);
@@ -154,9 +168,11 @@ function ChatContainer() {
         if (selectedUser?._id) {
             getMessages(selectedUser._id);
             subscribeToMessages();
+            // Check whether E2E shared key is available for this conversation
+            getSharedKeyStatus(selectedUser._id).then(setIsE2EReady);
         }
         return () => unsubscribeFromMessages();
-    }, [selectedUser?._id, getMessages, subscribeToMessages, unsubscribeFromMessages]);
+    }, [selectedUser?._id, getMessages, subscribeToMessages, unsubscribeFromMessages, getSharedKeyStatus]);
 
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -248,6 +264,22 @@ function ChatContainer() {
                         {isOnline ? "Online" : "Offline"}
                     </p>
                 </div>
+
+                {/* 🔐 E2E encryption badge — visible once shared key is established */}
+                {isE2EReady && (
+                    <div
+                        className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold"
+                        style={{
+                            backgroundColor: 'rgba(52, 211, 153, 0.12)',
+                            color: '#34d399',
+                            border: '1px solid rgba(52, 211, 153, 0.25)',
+                        }}
+                        title="End-to-end encrypted — messages are encrypted in your browser and can only be read by you and the recipient."
+                    >
+                        <ShieldCheck className="w-3 h-3" />
+                        <span>E2E Encrypted</span>
+                    </div>
+                )}
             </div>
 
             {/* ── Messages ── */}
@@ -323,7 +355,7 @@ function ChatContainer() {
                         type="text"
                         value={text}
                         onChange={(e) => setText(e.target.value)}
-                        placeholder="Write a message..."
+                        placeholder={isE2EReady ? "Write an encrypted message..." : "Write a message..."}
                         className="chat-input w-full rounded-xl py-2.5 pl-4 pr-11 text-sm transition-all"
                     />
                     <div className="absolute right-3 top-1/2 -translate-y-1/2" ref={emojiPickerRef}>
@@ -351,6 +383,21 @@ function ChatContainer() {
                         )}
                     </div>
                 </div>
+
+                {/* Lock indicator — shows E2E status left of send button */}
+                {isE2EReady ? (
+                    <Lock
+                        className="w-4 h-4 flex-shrink-0"
+                        style={{ color: '#34d399' }}
+                        title="End-to-end encrypted"
+                    />
+                ) : (
+                    <LockOpen
+                        className="w-4 h-4 flex-shrink-0"
+                        style={{ color: 'var(--text-muted)' }}
+                        title="Not yet encrypted — waiting for partner's public key"
+                    />
+                )}
 
                 {/* Send */}
                 <button

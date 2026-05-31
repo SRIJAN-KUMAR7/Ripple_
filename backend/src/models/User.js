@@ -18,6 +18,12 @@ const userSchema=new mongoose.Schema({
     profilePic:{
         type:String,
         default:""
+    },
+    publicKey:{
+        type:String,
+        default:null
+        // Stores user's ECDH P-256 public key in Base64 SPKI format.
+        // Safe to store server-side — the matching private key never leaves the browser.
     }
 },{timestamps:true}) //shows createdAt and Updatedat
 

@@ -4,7 +4,7 @@ Ripple is a modern, full-stack real-time messaging application with **true end-t
 
 ---
 
-## 🔐 End-to-End Encryption
+## End-to-End Encryption
 
 > Messages are encrypted **in your browser** before they leave. The server only ever sees encrypted gibberish.
 
@@ -44,49 +44,49 @@ SERVER ONLY EVER SEES: encrypted ciphertext (unreadable gibberish)
 
 | Indicator | Meaning |
 |-----------|---------|
-| 🛡️ **E2E Encrypted** badge in header | Shared key established — encryption active |
-| 🔒 padlock next to timestamp | This specific message was encrypted |
-| 🔒 green lock left of Send button | Ready to encrypt |
-| 🔓 grey unlock left of Send button | Waiting for partner's public key |
+| **E2E Encrypted** badge in header | Shared key established — encryption active |
+| padlock next to timestamp | This specific message was encrypted |
+| green lock left of Send button | Ready to encrypt |
+| grey unlock left of Send button | Waiting for partner's public key |
 
 ### What Is / Is Not Encrypted
 
 | Content | Encrypted? | Reason |
 |---------|-----------|--------|
-| Text messages | ✅ Yes — AES-GCM | Ciphertext stored in DB |
-| Images | ❌ No | Stored on Cloudinary CDN as URLs |
-| Files | ❌ No | Stored on Cloudinary CDN as URLs |
+| Text messages | Yes — AES-GCM | Ciphertext stored in DB |
+| Images | No | Stored on Cloudinary CDN as URLs |
+| Files | No | Stored on Cloudinary CDN as URLs |
 
 ---
 
-## 🚀 Features
+## Features
 
-### 📨 Real-Time Communication
+### Real-Time Communication
 - **Instant Messaging** — Socket.io for low-latency delivery
 - **Online Presence** — Real-time online/offline tracking
 - **End-to-End Encrypted Text** — ECDH + AES-GCM in the browser
 
-### 🔐 Security & Authentication
+### Security & Authentication
 - **JWT Auth** — Secure cookie-based sessions
 - **Google OAuth** — One-click Google Login
 - **Arcjet Protection** — Bot protection, rate-limiting, DDoS shield
 - **bcryptjs** — Password hashing
 - **E2E Encryption** — Private key never leaves the browser
 
-### 🖼️ Rich Messaging
+### Rich Messaging
 - **Image sharing** — Cloudinary-backed uploads
 - **File sharing** — Any file type via Cloudinary
 - **Emoji picker** — `emoji-picker-react` integration
 - **Sound notifications** — Toggleable message sounds
 - **React Hot Toast** — Instant feedback toasts
 
-### 🎨 Modern UI/UX
+### Modern UI/UX
 - **Multiple themes** — Light, Dark, and custom palettes
 - **Responsive layout** — Mobile, tablet, desktop
 - **Zustand state** — Clean, scalable state management
 - **Collapsible sidebar**
 
-### 🛠️ Backend
+### Backend
 - **Express.js REST API**
 - **MongoDB + Mongoose** — Flexible schema
 - **Socket.io** — Real-time events
@@ -95,7 +95,7 @@ SERVER ONLY EVER SEES: encrypted ciphertext (unreadable gibberish)
 
 ---
 
-## 🧩 Tech Stack
+## Tech Stack
 
 ### Frontend
 | Technology | Purpose |
@@ -121,7 +121,7 @@ SERVER ONLY EVER SEES: encrypted ciphertext (unreadable gibberish)
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 Ripple/
@@ -162,7 +162,7 @@ Ripple/
 
 ---
 
-## 🛠️ Getting Started
+## Getting Started
 
 ### Prerequisites
 - Node.js v18+
@@ -214,7 +214,7 @@ EMAIL_FROM=...
 
 ---
 
-## 🔑 E2E Encryption API Reference
+## E2E Encryption API Reference
 
 ### `POST /api/keys/upload`
 Upload your ECDH public key after login.
@@ -263,7 +263,7 @@ If you see plaintext in the database, encryption is not wired correctly.
 
 ---
 
-## 🧪 Testing Encryption
+## Testing Encryption
 
 ### Browser Console Test
 
@@ -276,9 +276,9 @@ async function testE2E() {
           importPublicKey, importPrivateKey, deriveSharedKey,
           encryptMessage, decryptMessage } = await import('/src/lib/crypto.js');
 
-  console.log("🔑 Generating Alice's keys...");
+  console.log("Generating Alice's keys...");
   const aliceKeys = await generateKeyPair();
-  console.log("🔑 Generating Bob's keys...");
+  console.log("Generating Bob's keys...");
   const bobKeys = await generateKeyPair();
 
   const alicePub = await exportPublicKey(aliceKeys.publicKey);
@@ -290,28 +290,28 @@ async function testE2E() {
   const aliceShared = await deriveSharedKey(aliceKeys.privateKey, bobPubForAlice);
   const bobShared   = await deriveSharedKey(bobKeys.privateKey, alicePubForBob);
 
-  const msg = "Hello Bob! This is E2E encrypted 🔐";
+  const msg = "Hello Bob! This is E2E encrypted";
   const { ciphertext, iv } = await encryptMessage(msg, aliceShared);
 
-  console.log("\n📤 Original:", msg);
-  console.log("🔒 Encrypted (server sees this):", ciphertext.slice(0, 50) + "...");
+  console.log("\nOriginal:", msg);
+  console.log("Encrypted (server sees this):", ciphertext.slice(0, 50) + "...");
 
   const decrypted = await decryptMessage(ciphertext, iv, bobShared);
-  console.log("🔓 Decrypted by Bob:", decrypted);
-  console.log("✅ Match:", msg === decrypted);
+  console.log("Decrypted by Bob:", decrypted);
+  console.log("Match:", msg === decrypted);
 }
 testE2E();
 ```
 
 **Expected output:**
 ```
-🔑 Generating Alice's keys...
-🔑 Generating Bob's keys...
+Generating Alice's keys...
+Generating Bob's keys...
 
-📤 Original: Hello Bob! This is E2E encrypted 🔐
-🔒 Encrypted (server sees this): SGVsbG8gV29ybGQh...
-🔓 Decrypted by Bob: Hello Bob! This is E2E encrypted 🔐
-✅ Match: true
+Original: Hello Bob! This is E2E encrypted
+Encrypted (server sees this): SGVsbG8gV29ybGQh...
+Decrypted by Bob: Hello Bob! This is E2E encrypted
+Match: true
 ```
 
 ### Database Verification
@@ -325,7 +325,7 @@ The `ciphertext` field must show **base64 gibberish** — never readable text li
 
 ---
 
-## 💬 Interview Explanation
+## Interview Explanation
 
 > *"Ripple implements end-to-end encryption using ECDH key exchange via the Web Crypto API — no npm packages. Each user generates an ECDH P-256 key pair on login. The public key is stored on the server; the private key lives only in localStorage and never leaves the browser. When two users chat, they independently derive the same shared secret using ECDH, then use AES-GCM 256-bit encryption to encrypt every message client-side before it hits the socket. The server stores only ciphertext — it's architecturally impossible for it to read messages, even if the database is compromised."*
 
@@ -337,7 +337,7 @@ The `ciphertext` field must show **base64 gibberish** — never readable text li
 
 ---
 
-## ⚠️ Common Mistakes Avoided
+## Common Mistakes Avoided
 
 | Mistake | Why it breaks E2E | How Ripple avoids it |
 |---------|------------------|----------------------|
@@ -355,4 +355,4 @@ The `ciphertext` field must show **base64 gibberish** — never readable text li
 
 ---
 
-*Built with ❤️ by Srijan Kumar*
+*Built by Srijan Kumar*

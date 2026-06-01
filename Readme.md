@@ -1,6 +1,8 @@
 # Ripple — Real-time Chat with End-to-End Encryption
 
-Ripple is a modern, full-stack real-time messaging application with **true end-to-end encryption (E2E)**. Every text message is encrypted in the browser using ECDH key exchange + AES-GCM 256-bit encryption — the server stores only ciphertext and can **never** read your messages.
+> A modern, full-stack real-time messaging application with **true end-to-end encryption (E2E)**. Every message is encrypted in the browser before leaving your device. The server stores only ciphertext — it is architecturally impossible for it to read your messages.
+
+**Status:** Production Ready | **Security:** ECDH P-256 + AES-GCM 256-bit | **Architecture:** Fully Decentralized E2E
 
 ---
 
@@ -56,6 +58,25 @@ SERVER ONLY EVER SEES: encrypted ciphertext (unreadable gibberish)
 | Text messages | Yes — AES-GCM | Ciphertext stored in DB |
 | Images | No | Stored on Cloudinary CDN as URLs |
 | Files | No | Stored on Cloudinary CDN as URLs |
+
+---
+
+## Screenshots
+
+### Dark Theme
+E2E Encrypted conversation between two users with real-time synchronization
+
+![Ripple Dark Theme](image.png)
+
+### Light Theme
+Every message protected with AES-GCM 256-bit encryption. Full message history with encryption status.
+
+![Ripple Light Theme](image-1.png)
+
+### Database Security
+Server stores only ciphertext — never plaintext. Encryption fields visible in MongoDB.
+
+![Ripple Database View](image-2.png)
 
 ---
 
@@ -325,6 +346,36 @@ The `ciphertext` field must show **base64 gibberish** — never readable text li
 
 ---
 
+## Technical Deep Dive
+
+### How Ripple Achieves True End-to-End Encryption
+
+**Ripple implements end-to-end encryption using ECDH key exchange via the Web Crypto API — no npm packages required.**
+
+1. **Key Generation:** Each user generates an ECDH P-256 key pair on login
+2. **Key Management:** Public key stored server-side (safe); private key lives only in localStorage (never leaves browser)
+3. **Shared Secret:** When two users chat, they independently derive the same shared secret using ECDH
+4. **Message Encryption:** AES-GCM 256-bit encryption encrypts every message client-side before transmission
+5. **Server Transparency:** The server stores only ciphertext — it's architecturally impossible for it to read messages, even if the database is compromised
+
+### Why ECDH and not RSA?
+
+ECDH P-256 provides equivalent security to RSA-3072 with significantly smaller key sizes (256 bits vs 3072 bits). It offers:
+- **Faster performance** compared to RSA
+- **Lower bandwidth** consumption
+- **Same curve** used by Signal and TLS 1.3 — proven by millions of users
+
+### Understanding the IV (Initialization Vector)
+
+In AES-GCM encryption:
+- **What:** A 12-byte cryptographically random value generated per message
+- **Why random:** Ensures encrypting the same plaintext twice produces different ciphertexts
+- **Security:** Reusing an IV with the same key completely breaks GCM security
+- **Implementation:** Ripple generates a fresh random IV for every single message
+
+---
+
+## Security Badges
 
 ![E2E Encrypted](https://img.shields.io/badge/Messages-E2E%20Encrypted-green?style=flat-square&logo=security)
 ![ECDH P-256](https://img.shields.io/badge/Key%20Exchange-ECDH%20P--256-blue?style=flat-square)
@@ -333,4 +384,10 @@ The `ciphertext` field must show **base64 gibberish** — never readable text li
 
 ---
 
-*Built with ❤️ by Srijan Kumar*
+## License
+
+MIT License — See LICENSE file for details.
+
+---
+
+**Built by Srijan Kumar** | [GitHub](https://github.com/SRIJAN-KUMAR7)

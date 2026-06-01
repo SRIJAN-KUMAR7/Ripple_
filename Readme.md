@@ -325,28 +325,6 @@ The `ciphertext` field must show **base64 gibberish** — never readable text li
 
 ---
 
-## Interview Explanation
-
-> *"Ripple implements end-to-end encryption using ECDH key exchange via the Web Crypto API — no npm packages. Each user generates an ECDH P-256 key pair on login. The public key is stored on the server; the private key lives only in localStorage and never leaves the browser. When two users chat, they independently derive the same shared secret using ECDH, then use AES-GCM 256-bit encryption to encrypt every message client-side before it hits the socket. The server stores only ciphertext — it's architecturally impossible for it to read messages, even if the database is compromised."*
-
-**Why ECDH and not RSA?**
-> *"ECDH P-256 gives equivalent security to RSA-3072 with far smaller key sizes — 256 bits vs 3072. It's faster, uses less bandwidth, and is the same curve used by Signal and TLS 1.3."*
-
-**What's the IV and why is it random?**
-> *"IV stands for Initialization Vector. In AES-GCM, it's a 12-byte random value that ensures encrypting the same plaintext twice gives different ciphertexts. Reusing an IV with the same key completely breaks GCM security, so we generate a fresh cryptographically random IV for every single message."*
-
----
-
-## Common Mistakes Avoided
-
-| Mistake | Why it breaks E2E | How Ripple avoids it |
-|---------|------------------|----------------------|
-| Storing private key on server | Server can decrypt everything | Private key lives in localStorage only |
-| Reusing IV across messages | Breaks AES-GCM completely | `crypto.getRandomValues()` per message |
-| Encrypting after socket emit | Plaintext travels over network | Encrypt before `axiosInstance.post()` |
-| Caching shared key to localStorage | Exposed to XSS | In-memory `Map` — cleared on tab close |
-
----
 
 ![E2E Encrypted](https://img.shields.io/badge/Messages-E2E%20Encrypted-green?style=flat-square&logo=security)
 ![ECDH P-256](https://img.shields.io/badge/Key%20Exchange-ECDH%20P--256-blue?style=flat-square)
@@ -355,4 +333,4 @@ The `ciphertext` field must show **base64 gibberish** — never readable text li
 
 ---
 
-*Built by Srijan Kumar*
+*Built with ❤️ by Srijan Kumar*

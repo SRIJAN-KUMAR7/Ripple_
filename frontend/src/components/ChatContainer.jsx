@@ -355,7 +355,7 @@ function ChatContainer() {
                         type="text"
                         value={text}
                         onChange={(e) => setText(e.target.value)}
-                        placeholder={isE2EReady ? "Write an encrypted message..." : "Write a message..."}
+                        placeholder={isE2EReady ? "Write a message..." : "Write a message..."}
                         className="chat-input w-full rounded-xl py-2.5 pl-4 pr-11 text-sm transition-all"
                     />
                     <div className="absolute right-3 top-1/2 -translate-y-1/2" ref={emojiPickerRef}>

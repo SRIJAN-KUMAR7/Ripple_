@@ -131,8 +131,35 @@ html.light {
 /* ── Border animation (preserved) ────────────────────────────── */
 @theme {
   --animate-border: border 4s linear infinite;
+  --animate-fade-in-up: fade-in-up 0.8s ease-out forwards;
+  --animate-ocean: ocean-move 30s ease-in-out infinite;
+
   @keyframes border {
     to { --border-angle: 360deg; }
+  }
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes ocean-move {
+    0% {
+      transform: scale(1) rotate(0deg) translate(0, 0);
+    }
+    33% {
+      transform: scale(1.05) rotate(1deg) translate(-1%, -1%);
+    }
+    66% {
+      transform: scale(1.1) rotate(-1deg) translate(1%, 1%);
+    }
+    100% {
+      transform: scale(1) rotate(0deg) translate(0, 0);
+    }
   }
 }
 
